@@ -17,14 +17,14 @@ async def on_message(message):
     if message.author == bot.user:
         return
 
+@bot.command()
+@commands.has_permissions(manage_messages=True)
+async def purge(ctx, limit: int):
+    await ctx.message.delete()
+    await ctx.channel.purge(limit=limit)
+
 @bot.event
 async def on_ready():
-    print(f"Logged in as {bot.user}")
-
-@bot.command(description="I respond with Hello")
-async def hello(ctx):
-    await ctx.send("Hello!")
-
-
+    print(f"Alright logged in as {bot.user}\n---------------------------------------")
 
 bot.run(TOKEN)
