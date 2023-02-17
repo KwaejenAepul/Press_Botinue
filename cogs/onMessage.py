@@ -9,8 +9,7 @@ class onMessage(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        await bot.process_commands(message)
-        if message.author == bot.user:
+        if message.author == self.bot.user:
             return
         #Message counter
         conn = sqlite3.connect('press.db')
