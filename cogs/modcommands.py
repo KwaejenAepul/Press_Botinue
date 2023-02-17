@@ -7,7 +7,8 @@ class mod_commands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.warn_max = 3
-
+        self.timeout_length = 300
+        
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def purge(self, ctx, limit: int):
@@ -31,7 +32,7 @@ class mod_commands(commands.Cog):
         value = c.fetchone()
         await ctx.send(f"{member.name} has been warned!")
         if value[0] == self.warn_max:
-            await member.timeout(timedelta(seconds=60))
+            await member.timeout(timedelta(seconds=self.timeout_length))
             await ctx.send(f"{member.name} got {self.warn_max} warnings and is in time out")
             c.execute("UPDATE points SET warnings = 0 WHERE member=?", t)
             conn.commit()

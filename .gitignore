@@ -2,3 +2,4 @@ features
 .env
 press.db
 __pycache__
+naughtywords.txt
