@@ -13,14 +13,12 @@ class database(commands.Cog):
         c = conn.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS points (member UNIQUE , pupapoints INT, warnings INT)''')
         for i in ctx.guild.members:
-            if i.id == bot.user.id:
+            try:
+                member = (str(i.id), 0, 0)
+                c.execute("INSERT INTO points VALUES(?,?,?)", member)
+                conn.commit()
+            except:
                 pass
-            else:
-                try:
-                    c.execute("INSERT INTO points VALUES(?,?,?)", (str(i.id), 0, 0))
-                    conn.commit()
-                except:
-                    print(f"couldn't add {i.id}")
         conn.close()
 
 async def setup(bot):
