@@ -28,6 +28,11 @@ class onMessage(commands.Cog):
         self.bad_words.append(word)
         print(self.bad_words)
 
+    @commands.command()
+    @commands.has_permissions(ban_members = True)
+    async def listwords(self,ctx):
+        await ctx.send(self.bad_words)
+
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author == self.bot.user:
