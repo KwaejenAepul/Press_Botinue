@@ -15,6 +15,7 @@ class onjoin(commands.Cog):
         try:
             c.execute("INSERT INTO points VALUES(?,?,?)", newmember)
             conn.commit()
+            print(f"{newmember[0]} was added")
         except:
             print(f"{newmember} could not be added")
         conn.close()
