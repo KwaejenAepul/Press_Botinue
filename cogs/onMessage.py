@@ -18,11 +18,13 @@ class onMessage(commands.Cog):
         f.close()
         print(self.bad_words)
 
+    #remove banned word command
+    #migrate to DB instead of plain text
     @commands.command()
     @commands.has_permissions(ban_members = True)
-    async def add_word(self, ctx):
+    async def addword(self, ctx):
         contents = ctx.message.content.split()
-        word = contents[1]
+        word = contents[1].lower()
         with open("naughtywords.txt", "a") as f:
             f.write(f"\n{word}")
         self.bad_words.append(word)

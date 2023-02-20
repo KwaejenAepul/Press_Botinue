@@ -3,3 +3,5 @@ features
 press.db
 __pycache__
 naughtywords.txt
+pfp.*
+test.py

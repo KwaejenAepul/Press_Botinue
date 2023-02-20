@@ -11,11 +11,11 @@ class database(commands.Cog):
     async def init_db(self, ctx):
         conn = sqlite3.connect('press.db')
         c = conn.cursor()
-        c.execute('''CREATE TABLE IF NOT EXISTS points (member UNIQUE , pupapoints INT, warnings INT)''')
+        c.execute('''CREATE TABLE IF NOT EXISTS points (member UNIQUE , pupapoints INT, warnings INT, timeouts INT)''')
         for i in ctx.guild.members:
             try:
-                member = (str(i.id), 0, 0)
-                c.execute("INSERT INTO points VALUES(?,?,?)", member)
+                member = (str(i.id), 0, 0, 0)
+                c.execute("INSERT INTO points VALUES(?,?,?,?)", member)
                 conn.commit()
             except:
                 pass
