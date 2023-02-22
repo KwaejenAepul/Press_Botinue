@@ -20,6 +20,7 @@ class database(commands.Cog):
             except:
                 pass
         conn.close()
+        await ctx.send("member db created")
     
     @commands.command()
     @commands.has_permissions(ban_members = True)
@@ -29,6 +30,17 @@ class database(commands.Cog):
         c.execute('''CREATE TABLE IF NOT EXISTS warnings (member TEXT, reason TEXT, date TEXT)''')
         conn.commit()
         conn.close()
+        await ctx.send("warning db created")
+
+    @commands.command()
+    @commands.has_permissions(ban_members = True)
+    async def init_worddb(self, ctx):
+        conn = sqlite3.connect('press.db')
+        c = conn.cursor()
+        c.execute('''CREATE TABLE IF NOT EXISTS words (word UNIQUE)''')
+        conn.commit()
+        conn.close()
+        await ctx.send("word table created")
         
 async def setup(bot):
     await bot.add_cog(database(bot))
