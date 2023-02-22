@@ -33,6 +33,7 @@ class warning(commands.Cog):
         await ctx.send(f"{member.name} has been warned!")
         if value[0] == self.warn_max:
             c.execute("UPDATE points SET warnings = 0, timeouts = timeouts + 1 WHERE member=?", t)
+            c.execute("DELETE FROM warnings WHERE member = ?", t)
             conn.commit()
             await member.timeout(timedelta(seconds=self.timeout_length))
             await ctx.send(f"{member.name} got {self.warn_max} warnings and is in time out")
