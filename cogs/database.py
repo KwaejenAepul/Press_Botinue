@@ -20,6 +20,15 @@ class database(commands.Cog):
             except:
                 pass
         conn.close()
-
+    
+    @commands.command()
+    @commands.has_permissions(ban_members = True)
+    async def init_warndb(self, ctx):
+        conn = sqlite3.connect('press.db')
+        c = conn.cursor()
+        c.execute('''CREATE TABLE IF NOT EXISTS warnings (member TEXT, reason TEXT, date TEXT)''')
+        conn.commit()
+        conn.close()
+        
 async def setup(bot):
     await bot.add_cog(database(bot))
