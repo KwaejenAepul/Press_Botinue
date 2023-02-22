@@ -32,7 +32,6 @@ class warning(commands.Cog):
         value = c.fetchone()
         await ctx.send(f"{member.name} has been warned!")
         if value[0] == self.warn_max:
-            c.execute("UPDATE points SET warnings = 0, timeouts = timeouts + 1 WHERE member=?", t)
             c.execute("DELETE FROM warnings WHERE member = ?", t)
             conn.commit()
             await member.timeout(timedelta(seconds=self.timeout_length))
@@ -49,10 +48,27 @@ class warning(commands.Cog):
         reasons = "\n".join(i[0] for i in result)
         c.execute("SELECT timeouts FROM points WHERE member = ?", t)
         timeouts = c.fetchone()
-        text = f"Total timeouts: {timeouts[0]}\n\nCurrent warning reasons:\n{reasons}"
+        timeouts = timeouts[0]
+        c.execute("SELECT lasttimeout FROM points WHERE member=?", t)
+        lasttimeout = c.fetchone()
+        text = f"Total timeouts: {lasttimeout[0]}\nLast timeout:{timeout}\n\nCurrent warning reasons:\n{reasons}"
         embed = discord.Embed(title=member.name, description=text)
+        conn.close()
         await ctx.send(embed = embed)
 
+    @commands.Cog.listener()
+    async def on_member_update(self, before, after):
+        if after.is_timed_out():
+            date = str(datetime.today()).split()
+            t = (date[0], str(after.id))
+            member = (str(after.id),)
+            conn = sqlite3.connect("press.db")
+            c = conn.cursor()
+            c.execute("UPDATE points SET warnings = 0, timeouts = timeouts + 1 WHERE member=?", member)
+            c.execute("UPDATE points SET lasttimeout=? WHERE member=?", t)
+            conn.commit()
+            conn.close()
+            
     @tasks.loop(hours=1.0)
     async def checkdb(self):
         date = str(datetime.today()).split()
