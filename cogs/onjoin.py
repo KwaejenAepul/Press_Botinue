@@ -11,9 +11,9 @@ class onjoin(commands.Cog):
         print(member.id)
         conn = sqlite3.connect('press.db')
         c = conn.cursor()
-        newmember=(str(member.id), 0, 0)
+        newmember=(str(member.id), 0, 0, 0)
         try:
-            c.execute("INSERT INTO points VALUES(?,?,?)", newmember)
+            c.execute("INSERT INTO points VALUES(?,?,?,?)", newmember)
             conn.commit()
             print(f"{newmember[0]} was added")
         except:
