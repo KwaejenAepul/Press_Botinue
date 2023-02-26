@@ -41,6 +41,16 @@ class database(commands.Cog):
         conn.commit()
         conn.close()
         await ctx.send("word table created")
+
+    @commands.command()
+    @commands.has_guild_permissions(ban_members = True)
+    async def init_timeouttracker(self,ctx):
+        conn = sqlite3.connect('press.db')
+        c = conn.cursor()
+        c.execute('''CREATE TABLE IF NOT EXISTS timeouts (member TEXT, date TEXT)''')
+        conn.commit()
+        conn.close()
+        await ctx.send("timeout tracker created")
         
 async def setup(bot):
     await bot.add_cog(database(bot))
