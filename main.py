@@ -12,7 +12,7 @@ PREFIX = getenv('prefix')
 intents = discord.Intents.all()
 description = "Hi pupaling how can I help you?"
 
-bot = commands.Bot(command_prefix=PREFIX, description=description, intents=intents)
+bot = commands.Bot(command_prefix=PREFIX, description=description, intents=intents, help_command=None)
 
 @bot.event
 async def on_ready():

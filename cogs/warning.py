@@ -61,7 +61,7 @@ class warning(commands.Cog):
         last_30_days = 0
         for row in result:
             last_30_days += 1
-        embed = discord.Embed(title=member.name, description=f"Total timeouts:{timeouts}\tLast timeout:{lasttimeout}\nLast 30 days:{last_30_days}\n\nCurrent warning reasons:\n{reasons}")
+        embed = discord.Embed(title=member.name, description=f"Total timeouts:{timeouts} | Last timeout:{lasttimeout}\nLast 30 days:{last_30_days}\n\nCurrent warning reasons:\n{reasons}")
         conn.close()
         await ctx.send(embed = embed)
 
