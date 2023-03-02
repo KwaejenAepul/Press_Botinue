@@ -46,8 +46,7 @@ class onMessage(commands.Cog):
             conn.close()
             await ctx.send(f"deleted {i}")
 
-    @commands.command()
-    @commands.has_permissions(ban_members = True)
+    @commands.command(aliases = ["wordlist"])
     async def listwords(self,ctx):
         words = "\n".join(i for i in self.bad_words)
         embed = discord.Embed(title= "Banned word list", description= words)
@@ -61,6 +60,7 @@ class onMessage(commands.Cog):
         for word in self.bad_words:
             if word in contents:
                 await message.delete()
+                await message.channel.send(f"{message.author.mention}, message contained banned word use \"!wordlist\" for the list of bannd words")
 
         #Message counter
         conn = sqlite3.connect('press.db')
