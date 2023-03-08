@@ -7,6 +7,18 @@ class onMessage(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.bad_words = []
+
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if message.author == self.bot.user:
+            return
+        contents = message.content.lower().split()
+        if contents[0] == "?addword":
+            return
+        for word in self.bad_words:
+            if word in contents:
+                await message.delete()
+                await message.channel.send(f"{message.author.mention}, message contained banned word use \"!wordlist\" for the list of bannd words")
     
     #Word filter related stuff
     @commands.Cog.listener()
@@ -52,15 +64,6 @@ class onMessage(commands.Cog):
         embed = discord.Embed(title= "Banned word list", description= words)
         await ctx.send(embed=embed)
 
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        if message.author == self.bot.user:
-            return
-        contents = message.content.lower().split()
-        for word in self.bad_words:
-            if word in contents:
-                await message.delete()
-                await message.channel.send(f"{message.author.mention}, message contained banned word use \"!wordlist\" for the list of bannd words")
 
         #Message counter
         conn = sqlite3.connect('press.db')
