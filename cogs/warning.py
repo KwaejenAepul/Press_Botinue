@@ -38,6 +38,7 @@ class warning(commands.Cog):
             for row in result:
                 last_30_days += 1
             c.execute("DELETE FROM warnings WHERE member = ?", t)
+            c.execute("UPDATE points SET warnings = 0 WHERE member=?", t)
             conn.commit()
             await member.timeout(timedelta(seconds=self.timeout_length*last_30_days + self.timeout_length))
             await ctx.send(f"{member.name} got {self.warn_max} warnings and is in time out")
@@ -75,7 +76,7 @@ class warning(commands.Cog):
             timeouttuple = (str(after.id), futuredate[0])
             conn = sqlite3.connect("press.db")
             c = conn.cursor()
-            c.execute("UPDATE points SET warnings = 0, timeouts = timeouts + 1 WHERE member=?", member)
+            c.execute("UPDATE points SET timeouts = timeouts + 1 WHERE member=?", member)
             c.execute("UPDATE points SET lasttimeout=? WHERE member=?", t)
             c.execute("INSERT INTO timeouts VALUES(?,?)", timeouttuple)
             conn.commit()

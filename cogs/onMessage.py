@@ -1,4 +1,6 @@
 from discord.ext import commands
+from datetime import timedelta, datetime
+from dateutil.relativedelta import relativedelta
 import discord
 import sqlite3
 
@@ -7,19 +9,61 @@ class onMessage(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.bad_words = []
+        self.warn_max = 3
+        self.timeout_length = 300
 
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author == self.bot.user:
             return
         contents = message.content.lower().split()
-        if contents[0] == "?addword":
+        if contents[0] == "!addword" or contents[0] == "!deleteword":
             return
         for word in self.bad_words:
             if word in contents:
                 await message.delete()
-                await message.channel.send(f"{message.author.mention}, message contained banned word use \"!wordlist\" for the list of bannd words")
-    
+                await message.channel.send(f"{message.author.mention}, message contained banned word and have been warned.\nUse \"!wordlist\" for the list of banned words")
+                t = (str(message.author.id),)
+                conn = sqlite3.connect("press.db")
+                c = conn.cursor()
+                c.execute("UPDATE points SET warnings = warnings + 1 WHERE member=?", t)
+                conn.commit()
+                reason = "used slur/banned word"
+                print(1)
+                date = str(datetime.today() + relativedelta(days=7)).split()
+                print(2)
+                warn_entry = (str(message.author.id), reason, date[0])
+                print(3)
+                c.execute("INSERT INTO warnings VALUES(?,?,?)", warn_entry)
+                print(4)
+                conn.commit()
+                print(5)
+                c.execute("SELECT warnings FROM points WHERE member=?", t)
+                print(6)
+                value = c.fetchone()
+                print(7)
+                if value[0] == self.warn_max:
+                    result = c.execute("SELECT* FROM timeouts WHERE member=?", t)
+                    last_30_days = 0
+                    for row in result:
+                        last_30_days += 1
+                    c.execute("DELETE FROM warnings WHERE member = ?", t)
+                    c.execute("UPDATE points SET warnings = 0 WHERE member=?", t)
+                    conn.commit()
+                    await message.author.timeout(timedelta(seconds=self.timeout_length*last_30_days + self.timeout_length))
+                    await ctx.send(f"{message.author.name} got {self.warn_max} warnings and is in time out")
+                conn.close()
+                return
+                
+        #Message counter
+        conn = sqlite3.connect('press.db')
+        c = conn.cursor()
+        t = (str(message.author.id),)
+        c.execute("UPDATE points SET pupapoints = pupapoints + 1 WHERE member=?", t)
+        conn.commit()
+        conn.close()
+                
+
     #Word filter related stuff
     @commands.Cog.listener()
     async def on_ready(self):
@@ -64,14 +108,6 @@ class onMessage(commands.Cog):
         embed = discord.Embed(title= "Banned word list", description= words)
         await ctx.send(embed=embed)
 
-
-        #Message counter
-        conn = sqlite3.connect('press.db')
-        c = conn.cursor()
-        t = (str(message.author.id),)
-        c.execute("UPDATE points SET pupapoints = pupapoints + 1 WHERE member=?", t)
-        conn.commit()
-        conn.close()
     
 
 async def setup(bot):
