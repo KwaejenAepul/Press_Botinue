@@ -29,19 +29,12 @@ class onMessage(commands.Cog):
                 c.execute("UPDATE points SET warnings = warnings + 1 WHERE member=?", t)
                 conn.commit()
                 reason = "used slur/banned word"
-                print(1)
                 date = str(datetime.today() + relativedelta(days=7)).split()
-                print(2)
                 warn_entry = (str(message.author.id), reason, date[0])
-                print(3)
                 c.execute("INSERT INTO warnings VALUES(?,?,?)", warn_entry)
-                print(4)
                 conn.commit()
-                print(5)
                 c.execute("SELECT warnings FROM points WHERE member=?", t)
-                print(6)
                 value = c.fetchone()
-                print(7)
                 if value[0] == self.warn_max:
                     result = c.execute("SELECT* FROM timeouts WHERE member=?", t)
                     last_30_days = 0
@@ -54,7 +47,7 @@ class onMessage(commands.Cog):
                     await ctx.send(f"{message.author.name} got {self.warn_max} warnings and is in time out")
                 conn.close()
                 return
-                
+
         #Message counter
         conn = sqlite3.connect('press.db')
         c = conn.cursor()
