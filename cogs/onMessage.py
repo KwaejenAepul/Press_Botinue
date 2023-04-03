@@ -96,6 +96,7 @@ class onMessage(commands.Cog):
             await ctx.send(f"deleted {i}")
 
     @commands.command(aliases = ["wordlist"])
+    @commands.has_permissions(ban_members = True)
     async def listwords(self,ctx):
         words = "\n".join(i for i in self.bad_words)
         embed = discord.Embed(title= "Banned word list", description= words)
