@@ -5,6 +5,7 @@ import discord
 import sqlite3
 
 
+
 class onMessage(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -22,7 +23,7 @@ class onMessage(commands.Cog):
         for word in self.bad_words:
             if word in contents:
                 await message.delete()
-                await message.channel.send(f"{message.author.mention}, message contained banned word and have been warned.\nUse \"!wordlist\" for the list of banned words")
+                await message.channel.send(f"{message.author.mention}, message contained banned word and have been warned.")
                 t = (str(message.author.id),)
                 conn = sqlite3.connect("press.db")
                 c = conn.cursor()
@@ -55,8 +56,7 @@ class onMessage(commands.Cog):
         c.execute("UPDATE points SET pupapoints = pupapoints + 1 WHERE member=?", t)
         conn.commit()
         conn.close()
-                
-
+        
     #Word filter related stuff
     @commands.Cog.listener()
     async def on_ready(self):
