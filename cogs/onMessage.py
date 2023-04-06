@@ -5,7 +5,6 @@ import discord
 import sqlite3
 
 
-
 class onMessage(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -23,7 +22,9 @@ class onMessage(commands.Cog):
         for word in self.bad_words:
             if word in contents:
                 await message.delete()
-                await message.channel.send(f"{message.author.mention}, message contained banned word and have been warned.")
+                await message.channel.send(
+                    f"{message.author.mention}, message contained banned word and have been warned."
+                )
                 t = (str(message.author.id),)
                 conn = sqlite3.connect("press.db")
                 c = conn.cursor()
@@ -44,20 +45,27 @@ class onMessage(commands.Cog):
                     c.execute("DELETE FROM warnings WHERE member = ?", t)
                     c.execute("UPDATE points SET warnings = 0 WHERE member=?", t)
                     conn.commit()
-                    await message.author.timeout(timedelta(seconds=self.timeout_length*last_30_days + self.timeout_length))
-                    await ctx.send(f"{message.author.name} got {self.warn_max} warnings and is in time out")
+                    await message.author.timeout(
+                        timedelta(
+                            seconds=self.timeout_length * last_30_days
+                            + self.timeout_length
+                        )
+                    )
+                    await ctx.send(
+                        f"{message.author.name} got {self.warn_max} warnings and is in time out"
+                    )
                 conn.close()
                 return
 
-        #Message counter
-        conn = sqlite3.connect('press.db')
+        # Message counter
+        conn = sqlite3.connect("press.db")
         c = conn.cursor()
         t = (str(message.author.id),)
         c.execute("UPDATE points SET pupapoints = pupapoints + 1 WHERE member=?", t)
         conn.commit()
         conn.close()
-        
-    #Word filter related stuff
+
+    # Word filter related stuff
     @commands.Cog.listener()
     async def on_ready(self):
         conn = sqlite3.connect("press.db")
@@ -68,7 +76,7 @@ class onMessage(commands.Cog):
         print(self.bad_words)
 
     @commands.command()
-    @commands.has_permissions(ban_members = True)
+    @commands.has_permissions(ban_members=True)
     async def addword(self, ctx):
         contents = ctx.message.content.lower().split()
         for i in contents[1:]:
@@ -80,9 +88,9 @@ class onMessage(commands.Cog):
             conn.commit()
             conn.close()
             await ctx.send(f"added {i}")
-            
+
     @commands.command()
-    @commands.has_permissions(ban_members = True)
+    @commands.has_permissions(ban_members=True)
     async def deleteword(self, ctx):
         contents = ctx.message.content.lower().split()
         for i in contents[1:]:
@@ -95,14 +103,13 @@ class onMessage(commands.Cog):
             conn.close()
             await ctx.send(f"deleted {i}")
 
-    @commands.command(aliases = ["wordlist"])
-    @commands.has_permissions(ban_members = True)
-    async def listwords(self,ctx):
+    @commands.command(aliases=["wordlist"])
+    @commands.has_permissions(ban_members=True)
+    async def listwords(self, ctx):
         words = "\n".join(i for i in self.bad_words)
-        embed = discord.Embed(title= "Banned word list", description= words)
+        embed = discord.Embed(title="Banned word list", description=words)
         await ctx.send(embed=embed)
 
-    
 
 async def setup(bot):
     await bot.add_cog(onMessage(bot))

@@ -4,8 +4,9 @@ from dateutil.relativedelta import relativedelta
 import discord
 import sqlite3
 
-#read out all warnings from specific member
-#remove warnings
+# read out all warnings from specific member
+# remove warnings
+
 
 class warning(commands.Cog):
     def __init__(self, bot):
@@ -14,9 +15,9 @@ class warning(commands.Cog):
         self.timeout_length = 300
         self.checkdb.start()
         self.checktimeouts.start()
-        
+
     @commands.command()
-    @commands.has_permissions(ban_members = True)
+    @commands.has_permissions(ban_members=True)
     async def warn(self, ctx, member: discord.Member = None):
         t = (str(member.id),)
         conn = sqlite3.connect("press.db")
@@ -40,12 +41,18 @@ class warning(commands.Cog):
             c.execute("DELETE FROM warnings WHERE member = ?", t)
             c.execute("UPDATE points SET warnings = 0 WHERE member=?", t)
             conn.commit()
-            await member.timeout(timedelta(seconds=self.timeout_length*last_30_days + self.timeout_length))
-            await ctx.send(f"{member.name} got {self.warn_max} warnings and is in time out")
+            await member.timeout(
+                timedelta(
+                    seconds=self.timeout_length * last_30_days + self.timeout_length
+                )
+            )
+            await ctx.send(
+                f"{member.name} got {self.warn_max} warnings and is in time out"
+            )
         conn.close()
 
     @commands.command()
-    @commands.has_permissions(ban_members = True)
+    @commands.has_permissions(ban_members=True)
     async def warnings(self, ctx, member: discord.Member = None):
         t = (str(member.id),)
         conn = sqlite3.connect("press.db")
@@ -62,9 +69,12 @@ class warning(commands.Cog):
         last_30_days = 0
         for row in result:
             last_30_days += 1
-        embed = discord.Embed(title=member.name, description=f"Total timeouts:{timeouts} | Last timeout:{lasttimeout}\nLast 30 days:{last_30_days}\n\nCurrent warning reasons:\n{reasons}")
+        embed = discord.Embed(
+            title=member.name,
+            description=f"Total timeouts:{timeouts} | Last timeout:{lasttimeout}\nLast 30 days:{last_30_days}\n\nCurrent warning reasons:\n{reasons}",
+        )
         conn.close()
-        await ctx.send(embed = embed)
+        await ctx.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
@@ -76,24 +86,28 @@ class warning(commands.Cog):
             timeouttuple = (str(after.id), futuredate[0])
             conn = sqlite3.connect("press.db")
             c = conn.cursor()
-            c.execute("UPDATE points SET timeouts = timeouts + 1 WHERE member=?", member)
+            c.execute(
+                "UPDATE points SET timeouts = timeouts + 1 WHERE member=?", member
+            )
             c.execute("UPDATE points SET lasttimeout=? WHERE member=?", t)
             c.execute("INSERT INTO timeouts VALUES(?,?)", timeouttuple)
             conn.commit()
             conn.close()
-            
+
     @tasks.loop(hours=1.0)
     async def checkdb(self):
         date = str(datetime.today()).split()
         date = (date[0],)
-        conn = sqlite3.connect('press.db')
+        conn = sqlite3.connect("press.db")
         c = conn.cursor()
         c2 = conn.cursor()
         result = c.execute("SELECT * FROM warnings")
         for row in result:
             if row[2] == date[0]:
                 member = (row[0],)
-                c2.execute("UPDATE points SET warnings = warnings - 1 WHERE member=?", member)
+                c2.execute(
+                    "UPDATE points SET warnings = warnings - 1 WHERE member=?", member
+                )
                 conn.commit()
                 c2.execute("SELECT warnings FROM points WHERE member=?", member)
                 value = c2.fetchone()
@@ -104,16 +118,16 @@ class warning(commands.Cog):
         conn.commit()
         conn.close()
 
-    @tasks.loop(hours =1.0)
+    @tasks.loop(hours=1.0)
     async def checktimeouts(self):
         date = str(datetime.today()).split()
-        date = (date[0] ,)
-        conn = sqlite3.connect('press.db')
+        date = (date[0],)
+        conn = sqlite3.connect("press.db")
         c = conn.cursor()
         c.execute("DELETE FROM timeouts WHERE date = ?", date)
         conn.commit()
         conn.close()
-    
+
     @checkdb.before_loop
     async def before_checkdb(self):
         print("starting bot")
@@ -122,6 +136,7 @@ class warning(commands.Cog):
     @checktimeouts.before_loop
     async def before_timeoutcheck(self):
         await self.bot.wait_until_ready()
+
 
 async def setup(bot):
     await bot.add_cog(warning(bot))
