@@ -3,6 +3,7 @@ from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
 import discord
 import sqlite3
+import random
 
 
 class onMessage(commands.Cog):
@@ -11,6 +12,7 @@ class onMessage(commands.Cog):
         self.bad_words = []
         self.warn_max = 3
         self.timeout_length = 300
+        self.xp_change = 3
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -28,7 +30,8 @@ class onMessage(commands.Cog):
                 t = (str(message.author.id),)
                 conn = sqlite3.connect("press.db")
                 c = conn.cursor()
-                c.execute("UPDATE points SET warnings = warnings + 1 WHERE member=?", t)
+                c.execute(
+                    "UPDATE points SET warnings = warnings + 1 WHERE member=?", t)
                 conn.commit()
                 reason = "used slur/banned word"
                 date = str(datetime.today() + relativedelta(days=7)).split()
@@ -38,12 +41,14 @@ class onMessage(commands.Cog):
                 c.execute("SELECT warnings FROM points WHERE member=?", t)
                 value = c.fetchone()
                 if value[0] == self.warn_max:
-                    result = c.execute("SELECT* FROM timeouts WHERE member=?", t)
+                    result = c.execute(
+                        "SELECT* FROM timeouts WHERE member=?", t)
                     last_30_days = 0
                     for row in result:
                         last_30_days += 1
                     c.execute("DELETE FROM warnings WHERE member = ?", t)
-                    c.execute("UPDATE points SET warnings = 0 WHERE member=?", t)
+                    c.execute(
+                        "UPDATE points SET warnings = 0 WHERE member=?", t)
                     conn.commit()
                     await message.author.timeout(
                         timedelta(
@@ -58,12 +63,14 @@ class onMessage(commands.Cog):
                 return
 
         # Message counter
-        conn = sqlite3.connect("press.db")
-        c = conn.cursor()
-        t = (str(message.author.id),)
-        c.execute("UPDATE points SET pupapoints = pupapoints + 1 WHERE member=?", t)
-        conn.commit()
-        conn.close()
+        if random.randint(1, self.xp_change) == self.xp_change:
+            conn = sqlite3.connect("press.db")
+            c = conn.cursor()
+            t = (str(message.author.id),)
+            c.execute(
+                "UPDATE points SET pupapoints = pupapoints + 1 WHERE member=?", t)
+            conn.commit()
+            conn.close()
 
     # Word filter related stuff
     @commands.Cog.listener()

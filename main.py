@@ -16,12 +16,14 @@ bot = commands.Bot(command_prefix=PREFIX, intents=intents, help_command=None)
 
 @bot.event
 async def on_ready():
-    print(f"Alright logged in as {bot.user}\n---------------------------------------")
+    print(
+        f"Alright logged in as {bot.user}\n---------------------------------------")
 
 
 async def load():
     for file in listdir("./cogs"):
         if file.endswith(".py"):
+            print(f"loading: {file}")
             await bot.load_extension(f"cogs.{file[:-3]}")
 
 

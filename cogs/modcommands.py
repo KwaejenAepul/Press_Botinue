@@ -1,7 +1,5 @@
 from discord.ext import commands, tasks
-from datetime import timedelta
 import discord
-import sqlite3
 
 
 class mod_commands(commands.Cog):
