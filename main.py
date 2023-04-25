@@ -2,13 +2,12 @@ from dotenv import load_dotenv
 from os import getenv, listdir
 from discord.ext import commands
 import discord
-import sqlite3
 import asyncio
 
 
 load_dotenv()
-TOKEN = getenv("TOKEN")
-PREFIX = getenv("prefix")
+TOKEN = getenv("TOKEN", "")
+PREFIX = getenv("prefix", "!")
 intents = discord.Intents.all()
 
 bot = commands.Bot(command_prefix=PREFIX, intents=intents, help_command=None)

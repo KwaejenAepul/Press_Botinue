@@ -3,7 +3,7 @@ from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
 import discord
 import sqlite3
-import random
+# import random
 
 
 class onMessage(commands.Cog):
@@ -12,7 +12,7 @@ class onMessage(commands.Cog):
         self.bad_words = []
         self.warn_max = 3
         self.timeout_length = 300
-        self.xp_change = 3
+        self.xp_chance = 3
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -62,16 +62,16 @@ class onMessage(commands.Cog):
                 conn.close()
                 return
 
-        # Message counter
-        if random.randint(1, self.xp_change) == self.xp_change:
-            conn = sqlite3.connect("press.db")
-            c = conn.cursor()
-            t = (str(message.author.id),)
-            c.execute(
-                "UPDATE points SET pupapoints = pupapoints + 1 WHERE member=?", t)
-            conn.commit()
-            conn.close()
-
+        # # Message counter
+        # if random.randint(1, self.xp_chance) == self.xp_chance:
+        #     conn = sqlite3.connect("press.db")
+        #     c = conn.cursor()
+        #     t = (str(message.author.id),)
+        #     c.execute(
+        #         "UPDATE points SET pupapoints = pupapoints + 1 WHERE member=?", t)
+        #     conn.commit()
+        #     conn.close()
+        #
     # Word filter related stuff
     @commands.Cog.listener()
     async def on_ready(self):

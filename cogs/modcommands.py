@@ -1,13 +1,14 @@
 from discord.ext import commands, tasks
 import discord
 
-
+#1002680285491646564
 class mod_commands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.warn_max = 3
         self.timeout_length = 300
         self.challenge_message = ""
+        self.challenge_running = True
         # we hardcoding that shit LETS GOOOOOOOO
         self.channelID = 995797277027344436
         self.da_rulesID = 1007647922311155834
@@ -33,6 +34,16 @@ class mod_commands(commands.Cog):
         with open("challenge.txt", "w") as f:
             f.write(self.challenge_message)
 
+    @commands.command()
+    @commands.has_permissions(ban_members=True)
+    async def challengeon(self, ctx):
+        contents = ctx.message.content.lower().split()
+        if contents[1] == "true":
+            self.challenge_running = True
+        elif contents[1]=="false":
+            self.challenge_running = False
+        print(self.challenge_running)
+
     @commands.Cog.listener()
     async def on_ready(self):
         with open("challenge.txt", "r") as f:
@@ -40,18 +51,23 @@ class mod_commands(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
-        await print(error)
+        print(error)
+        return
 
     @tasks.loop(hours=12.0)
     async def challengeMessage(self):
-        da_rules = self.bot.get_channel(self.da_rulesID)
-        msg = f"""
-        \nDaily reminder to check out this Months Community Challenge for a chance to gain exclusive server roles,and a chance to win a prize.
-        \nCurrently this Month's challenge is: 
-        {self.challenge_message}
-        \nHead on over to {da_rules.mention} for more information."""
         channel = self.bot.get_channel(self.channelID)
-        await channel.send(msg)
+        if self.challenge_running:
+            da_rules = self.bot.get_channel(self.da_rulesID)
+            msg = f"""
+            \nDaily reminder to check out this Months Community Challenge for a chance to gain exclusive server roles,and a chance to win a prize.
+            \nCurrently this Month's challenge is: 
+            {self.challenge_message}
+            \nHead on over to {da_rules.mention} for more information."""
+            await channel.send(msg)
+        else:
+            pollID = self.bot.get_channel(1002680285491646564)
+            await channel.send(f"Reminder to check out {pollID.mention} to vote on the next Community Challenge")
 
     @challengeMessage.before_loop
     async def before_checkdb(self):
