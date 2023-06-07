@@ -39,10 +39,10 @@ class mod_commands(commands.Cog):
     async def challengeon(self, ctx):
         contents = ctx.message.content.lower().split()
         if contents[1] == "true":
-            self.challenge_running = True
+            self.challengeMessage.start()
         elif contents[1]=="false":
-            self.challenge_running = False
-        print(self.challenge_running)
+            self.challengeMessage.stop()
+        
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -54,20 +54,16 @@ class mod_commands(commands.Cog):
         print(error)
         return
 
-    @tasks.loop(hours=12.0)
+    @tasks.loop(hours=168.0)
     async def challengeMessage(self):
         channel = self.bot.get_channel(self.channelID)
-        if self.challenge_running:
-            da_rules = self.bot.get_channel(self.da_rulesID)
-            msg = f"""
-            \nDaily reminder to check out this Months Community Challenge for a chance to gain exclusive server roles,and a chance to win a prize.
-            \nCurrently this Month's challenge is: 
-            {self.challenge_message}
-            \nHead on over to {da_rules.mention} for more information."""
-            await channel.send(msg)
-        else:
-            pollID = self.bot.get_channel(1002680285491646564)
-            await channel.send(f"Reminder to check out {pollID.mention} to vote on the next Community Challenge")
+        da_rules = self.bot.get_channel(self.da_rulesID)
+        msg = f"""
+        \nCheck out this Month's Community Challenge for a chance to gain exclusive server roles, and a chance to win a prize.
+        \nCurrently this Month's challenge is: 
+        {self.challenge_message}
+        \nHead on over to {da_rules.mention} for more information."""
+        await channel.send(msg)
 
     @challengeMessage.before_loop
     async def before_checkdb(self):
