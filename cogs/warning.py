@@ -5,7 +5,7 @@ import discord
 import sqlite3
 
 # read out all warnings from specific member
-# remove warnings
+# add member to DB if warned for the first time
 
 
 class warning(commands.Cog):
@@ -22,8 +22,14 @@ class warning(commands.Cog):
         t = (str(member.id),)
         conn = sqlite3.connect("press.db")
         c = conn.cursor()
-        c.execute("UPDATE points SET warnings = warnings + 1 WHERE member=?", t)
-        conn.commit()
+        in_db = c.execute("SELECT EXISTS(SELECT 1 FROM points WHERE member=?)", t).fetchone()[0]
+        if in_db:
+            c.execute("UPDATE points SET warnings = warnings + 1 WHERE member=?", t)
+            conn.commit()
+        else:
+            c.execute("INSERT INTO points VALUES(?,?,?,?,?)",(str(member.id),1, 1, 0, ""))
+            conn.commit()
+
         contents = ctx.message.content.split()
         reason = " ".join(str(i) for i in contents[2:])
         date = str(datetime.today() + relativedelta(days=7)).split()
@@ -94,7 +100,7 @@ class warning(commands.Cog):
             conn.commit()
             conn.close()
 
-    @tasks.loop(hours=1.0)
+    @tasks.loop(hours=24.0)
     async def checkdb(self):
         date = str(datetime.today()).split()
         date = (date[0],)
@@ -118,7 +124,7 @@ class warning(commands.Cog):
         conn.commit()
         conn.close()
 
-    @tasks.loop(hours=1.0)
+    @tasks.loop(hours=24.0)
     async def checktimeouts(self):
         date = str(datetime.today()).split()
         date = (date[0],)

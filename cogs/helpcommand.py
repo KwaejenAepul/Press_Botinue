@@ -20,10 +20,6 @@ class helpcommand(commands.Cog):
         embed = discord.Embed(title=title, description=commands)
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=["help"])
-    async def member_help(self, ctx):
-        pass
-
-
+   
 async def setup(bot):
     await bot.add_cog(helpcommand(bot))
