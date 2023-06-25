@@ -4,10 +4,6 @@ from dateutil.relativedelta import relativedelta
 import discord
 import sqlite3
 
-# read out all warnings from specific member
-# add member to DB if warned for the first time
-
-
 class warning(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -73,7 +69,7 @@ class warning(commands.Cog):
         lasttimeout = lasttimeout[0]
         results = c.execute("SELECT* FROM timeouts WHERE member=?", t)
         last_30_days = 0
-        for row in result:
+        for row in results:
             last_30_days += 1
         embed = discord.Embed(
             title=member.name,
