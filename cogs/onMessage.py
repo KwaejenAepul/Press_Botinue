@@ -85,36 +85,33 @@ class onMessage(commands.Cog):
     @commands.command()
     @commands.has_permissions(ban_members=True)
     async def addword(self, ctx):
-        contents = ctx.message.content.lower().split()
-        for i in contents[1:]:
+        for i in ctx.message.content.lower().split()[1:]:
             self.bad_words.append(i)
             word = (i,)
             conn = sqlite3.connect("press.db")
             c = conn.cursor()
             c.execute("INSERT INTO words VALUES(?)", word)
             conn.commit()
-            conn.close()
             await ctx.send(f"added {i}")
+        conn.close()
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
     async def deleteword(self, ctx):
-        contents = ctx.message.content.lower().split()
-        for i in contents[1:]:
+        for i in ctx.message.content.lower().split()[1:]:
             self.bad_words.remove(i)
             word = (i,)
             conn = sqlite3.connect("press.db")
             c = conn.cursor()
             c.execute("DELETE FROM words WHERE word = ?", word)
             conn.commit()
-            conn.close()
             await ctx.send(f"deleted {i}")
+        conn.close()
 
     @commands.command(aliases=["wordlist"])
     @commands.has_permissions(ban_members=True)
     async def listwords(self, ctx):
-        words = "\n".join(i for i in self.bad_words)
-        embed = discord.Embed(title="Banned word list", description=words)
+        embed = discord.Embed(title="Banned word list", description="\n".join(i for i in self.bad_words))
         await ctx.send(embed=embed)
 
 

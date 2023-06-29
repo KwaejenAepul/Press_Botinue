@@ -8,7 +8,6 @@ class mod_commands(commands.Cog):
         self.warn_max = 3
         self.timeout_length = 300
         self.challenge_message = ""
-        self.challenge_running = True
         # we hardcoding that shit LETS GOOOOOOOO
         self.channelID = 995797277027344436
         self.da_rulesID = 1007647922311155834
@@ -29,19 +28,20 @@ class mod_commands(commands.Cog):
     @commands.command()
     @commands.has_permissions(ban_members=True)
     async def editchallenge(self, ctx):
-        contents = ctx.message.content.split()
-        self.challenge_message = " ".join(i for i in contents[1:])
+        self.challenge_message = " ".join(i for i in ctx.message.content.split()[1:])
         with open("challenge.txt", "w") as f:
             f.write(self.challenge_message)
+        await ctx.send(f"The challenge has been set to {self.challenge_message}")
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
-    async def challengeon(self, ctx):
-        contents = ctx.message.content.lower().split()
-        if contents[1] == "true":
+    async def challengeon(self, ctx, boolarg: str):
+        if boolarg == "true":
             self.challengeMessage.start()
-        elif contents[1]=="false":
+            await ctx.send("challenge reminder is on")
+        elif boolarg =="false":
             self.challengeMessage.stop()
+            await ctx.send("challenge reminder is off")
         
 
     @commands.Cog.listener()

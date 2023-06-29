@@ -9,3 +9,4 @@ press.db-journal
 *.db-journal
 challenge.txt
 pollmessage.txt
+cogs/tempcommand.py
