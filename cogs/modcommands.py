@@ -8,7 +8,7 @@ class mod_commands(commands.Cog):
         self.warn_max = 3
         self.timeout_length = 300
         self.challenge_message = ""
-        # we hardcoding that shit LETS GOOOOOOOO
+        # hardcoding the channel it sends the message to and the channel it refers to
         self.channelID = 995797277027344436
         self.da_rulesID = 1007647922311155834
         self.challengeMessage.start()

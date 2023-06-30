@@ -15,8 +15,10 @@ class helpcommand(commands.Cog):
         listword = "!listwords - list of bad words\n\n"
         warn = "!warn - give a warning\n"
         warnings = "!warnings- returns current warnings and timeout data of member\n\n"
-        purge = "!purge- removes n number of messages"
-        commands = addword + deleteword + listword + warn + warnings + purge
+        purge = "!purge- removes n number of messages\n\n"
+        challengeon= "!challengeon true/false - turns on or off challenge\n"
+        challengeedit = "!editchallenge - edit the current challenge\n"
+        commands = addword + deleteword + listword + warn + warnings + purge + challengeon + challengeedit
         embed = discord.Embed(title=title, description=commands)
         await ctx.send(embed=embed)
 
