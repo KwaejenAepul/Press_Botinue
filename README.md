@@ -12,6 +12,8 @@ a discord bot for the Press Continue community server
 - Basic mod tools to ban and mass remove messages
 
 ## Usage
+Install discord.py, dotenv and python-dateutil according to their respective install instructions
+
 Create a `.env` file that contains `TOKEN=your-bot-token` and `prefix=!`
 
 You can choose to use a different prefix but you'll have to change line 21 in  `onMessage.py` and the help command in `helpcommand.py` to reflect that
