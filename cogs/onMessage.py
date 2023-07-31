@@ -1,3 +1,4 @@
+import random as r
 from discord.ext import commands
 from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
@@ -11,15 +12,18 @@ class onMessage(commands.Cog):
         self.bad_words = []
         self.warn_max = 3
         self.timeout_length = 300
-        self.xp_chance = 3
+        self.nukejokes = ["Soooo Press, about those nuclear launch codes!", "Press, where did you say you kept those launch codes?", "Press, could you remind me what the nuclear launch codes were again?", "Press, could you please stop using me as your maid! I was hired as a moderator!"] 
 
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author == self.bot.user:
             return
         contents = message.content.lower().split()
-        if contents[0] == "!addword" or contents[0] == "!deleteword":
-            return
+        if message.author == 440920403326533662:
+            randomnumber = r.randint(0,15)
+            if randomnumber == 8:
+                joke = r.choice(self.nukejokes)
+                message.channel.send(joke)                
         for word in self.bad_words:
             if word in contents:
                 await message.delete()
