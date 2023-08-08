@@ -19,11 +19,11 @@ class onMessage(commands.Cog):
         if message.author == self.bot.user:
             return
         contents = message.content.lower().split()
-        if message.author == 440920403326533662:
+        if message.author.id == 971026065243901972:
             randomnumber = r.randint(0,15)
             if randomnumber == 8:
                 joke = r.choice(self.nukejokes)
-                message.channel.send(joke)                
+                await message.channel.send(joke)
         for word in self.bad_words:
             if word in contents:
                 await message.delete()
