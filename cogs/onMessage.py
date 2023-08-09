@@ -20,7 +20,7 @@ class onMessage(commands.Cog):
             return
         contents = message.content.lower().split()
         if message.author.id == message.guild.owner_id:
-            randomnumber = r.randint(0,15)
+            randomnumber = r.randint(0,30)
             if randomnumber == 8:
                 joke = r.choice(self.nukejokes)
                 await message.channel.send(joke)
