@@ -4,7 +4,6 @@ from discord.ext import commands
 import discord
 import asyncio
 
-
 load_dotenv()
 TOKEN = getenv("TOKEN", "")
 PREFIX = getenv("prefix", "!")

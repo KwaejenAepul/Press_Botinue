@@ -1,16 +1,15 @@
 from discord.ext import commands, tasks
 import discord
+import utils.config as config
 
-#1002680285491646564
 class mod_commands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.warn_max = 3
-        self.timeout_length = 300
+        self.warn_max = config.warn_max
+        self.timeout_length = config.timeout_length
         self.challenge_message = ""
-        # hardcoding the channel it sends the message to and the channel it refers to
-        self.channelID = 995797277027344436
-        self.da_rulesID = 1007647922311155834
+        self.channelID = config.generalchatID
+        self.da_rulesID = config.challengerulesID
         self.challengeMessage.start()
 
     @commands.command()
@@ -54,7 +53,7 @@ class mod_commands(commands.Cog):
         print(error)
         return
 
-    @tasks.loop(hours=168.0)
+    @tasks.loop(hours = config.remindertimer)
     async def challengeMessage(self):
         channel = self.bot.get_channel(self.channelID)
         da_rules = self.bot.get_channel(self.da_rulesID)

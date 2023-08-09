@@ -3,12 +3,12 @@ from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
 import discord
 import sqlite3
-
+import utils.config as config
 class warning(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.warn_max = 3
-        self.timeout_length = 300
+        self.warn_max = config.warn_max
+        self.timeout_length = config.timeout_length
         self.checkdb.start()
         self.checktimeouts.start()
 
@@ -28,7 +28,7 @@ class warning(commands.Cog):
 
         contents = ctx.message.content.split()
         reason = " ".join(str(i) for i in contents[2:])
-        date = str(datetime.today() + relativedelta(days=7)).split()
+        date = str(datetime.today() + relativedelta(days=config.warning_expire)).split()
         warn_entry = (str(member.id), reason, date[0])
         c.execute("INSERT INTO warnings VALUES(?,?,?)", warn_entry)
         conn.commit()
@@ -82,7 +82,7 @@ class warning(commands.Cog):
     async def on_member_update(self, before, after):
         if after.is_timed_out():
             date = str(datetime.today()).split()
-            futuredate = str(datetime.today() + relativedelta(months=1)).split()
+            futuredate = str(datetime.today() + relativedelta(days=config.timeout_expire)).split()
             t = (date[0], str(after.id))
             member = (str(after.id),)
             timeouttuple = (str(after.id), futuredate[0])

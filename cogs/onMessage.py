@@ -4,22 +4,22 @@ from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
 import discord
 import sqlite3
-
+import utils.config as config
 
 class onMessage(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.bad_words = []
-        self.warn_max = 3
-        self.timeout_length = 300
-        self.nukejokes = ["Soooo Press, about those nuclear launch codes!", "Press, where did you say you kept those launch codes?", "Press, could you remind me what the nuclear launch codes were again?", "Press, could you please stop using me as your maid! I was hired as a moderator!"] 
-
+        self.warn_max = config.warn_max
+        self.timeout_length = config.timeout_length
+        self.nukejokes = config.nukejokes
+        
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author == self.bot.user:
             return
         contents = message.content.lower().split()
-        if message.author.id == 971026065243901972:
+        if message.author.id == message.guild.owner_id:
             randomnumber = r.randint(0,15)
             if randomnumber == 8:
                 joke = r.choice(self.nukejokes)
@@ -37,7 +37,7 @@ class onMessage(commands.Cog):
                     "UPDATE points SET warnings = warnings + 1 WHERE member=?", t)
                 conn.commit()
                 reason = "used slur/banned word"
-                date = str(datetime.today() + relativedelta(days=7)).split()
+                date = str(datetime.today() + relativedelta(days=config.warning_expire)).split()
                 warn_entry = (str(message.author.id), reason, date[0])
                 c.execute("INSERT INTO warnings VALUES(?,?,?)", warn_entry)
                 conn.commit()
