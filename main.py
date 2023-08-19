@@ -1,15 +1,15 @@
 from dotenv import load_dotenv
 from os import getenv, listdir
 from discord.ext import commands
+from utils.config import prefix
 import discord
 import asyncio
 
 load_dotenv()
 TOKEN = getenv("TOKEN", "")
-PREFIX = getenv("prefix", "!")
 intents = discord.Intents.all()
 
-bot = commands.Bot(command_prefix=PREFIX, intents=intents, help_command=None)
+bot = commands.Bot(command_prefix=prefix, intents=intents, help_command=None)
 
 
 @bot.event

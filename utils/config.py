@@ -1,3 +1,5 @@
+prefix = "!"
+
 #warning system config
 warn_max = 3
 timeout_length = 300
@@ -11,6 +13,7 @@ remindertimer = 168 #this is in hours
 
                                     
 #bullying the owner stuff
+bully_owner = True
 nukejokes = ["Soooo Press, about those nuclear launch codes!", 
     "Press, where did you say you kept those launch codes?", 
     "Press, could you remind me what the nuclear launch codes were again?", 

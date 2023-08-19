@@ -19,7 +19,7 @@ class onMessage(commands.Cog):
         if message.author == self.bot.user:
             return
         contents = message.content.lower().split()
-        if message.author.id == message.guild.owner_id:
+        if message.author.id == message.guild.owner_id and config.bully_owner == True:
             randomnumber = r.randint(0,30)
             if randomnumber == 8:
                 joke = r.choice(self.nukejokes)

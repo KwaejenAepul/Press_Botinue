@@ -14,9 +14,7 @@ a discord bot for the Press Continue community server
 ## Usage
 Install discord.py, dotenv and python-dateutil according to their respective install instructions
 
-Create a `.env` file that contains `TOKEN=your-bot-token` and `prefix=!`
-
-You can choose to use a different prefix but you'll have to change line 21 in  `onMessage.py` and the help command in `helpcommand.py` to reflect that
+Create a `.env` file that contains `TOKEN=your-bot-token` 
 
 To run the both simply open the folder in your terminal and run `python3 main.py`
 
@@ -24,13 +22,8 @@ Initialise the database with`!init_db`.
 
 This will create a database with a table for the warnings of the past 7 days, timeouts of the past 30 days, banned words, and a table for every member that has been warned at least once with total warnings and timeouts the member has had
 
-If you want to make use of the message reminder you'll have to edit the channelID in `modcommands.py`
+All configuration is done in `utils/config.py`
 
-`self.channelID` is the channel the message will be send to
-
-`self.da_rulesID` is the channel where the message refers to with the rules of the current challenge
-
-The frequency of the message can be alter in the same on line 57 by changing the hours
 
 # Commands
 
