@@ -56,27 +56,31 @@ class warning(commands.Cog):
     @commands.command()
     @commands.has_permissions(ban_members=True)
     async def warnings(self, ctx, member: discord.Member = None):
-        t = (str(member.id),)
-        conn = sqlite3.connect("press.db")
-        c = conn.cursor()
-        result = c.execute("SELECT reason FROM warnings WHERE member = ?", t)
-        reasons = "\n".join(i[0] for i in result)
-        c.execute("SELECT timeouts FROM points WHERE member = ?", t)
-        timeouts = c.fetchone()
-        timeouts = timeouts[0]
-        c.execute("SELECT lasttimeout FROM points WHERE member=?", t)
-        lasttimeout = c.fetchone()
-        lasttimeout = lasttimeout[0]
-        results = c.execute("SELECT* FROM timeouts WHERE member=?", t)
-        last_30_days = 0
-        for row in results:
-            last_30_days += 1
-        embed = discord.Embed(
-            title=member.name,
-            description=f"Total timeouts:{timeouts} | Last timeout:{lasttimeout}\nLast 30 days:{last_30_days}\n\nCurrent warning reasons:\n{reasons}",
-        )
-        conn.close()
-        await ctx.send(embed=embed)
+        try:
+            t = (str(member.id),)
+            conn = sqlite3.connect("press.db")
+            c = conn.cursor()
+            result = c.execute("SELECT reason FROM warnings WHERE member = ?", t)
+            reasons = "\n".join(i[0] for i in result)
+            c.execute("SELECT timeouts FROM points WHERE member = ?", t)
+            timeouts = c.fetchone()
+            timeouts = timeouts[0]
+            c.execute("SELECT lasttimeout FROM points WHERE member=?", t)
+            lasttimeout = c.fetchone()
+            lasttimeout = lasttimeout[0]
+            results = c.execute("SELECT* FROM timeouts WHERE member=?", t)
+            last_30_days = 0
+            for row in results:
+                last_30_days += 1
+            embed = discord.Embed(
+                title=member.name,
+                description=f"Total timeouts:{timeouts} | Last timeout:{lasttimeout}\nLast 30 days:{last_30_days}\n\nCurrent warning reasons:\n{reasons}",
+            )
+            conn.close()
+            await ctx.send(embed=embed)
+        except TypeError:
+            await ctx.send(embed=discord.Embed(title=member.name, description=f"This user has no database entry")) 
+
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):

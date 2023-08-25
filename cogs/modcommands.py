@@ -58,7 +58,7 @@ class mod_commands(commands.Cog):
         channel = self.bot.get_channel(self.channelID)
         da_rules = self.bot.get_channel(self.da_rulesID)
         msg = f"""
-        \nCheck out this Month's Community Challenge for a chance to gain exclusive server roles, and a chance to win a prize.
+        \nCheck out this Month's Community Challenge for a chance to gain exclusive server roles.
         \nCurrently this Month's challenge is: 
         {self.challenge_message}
         \nHead on over to {da_rules.mention} for more information."""
