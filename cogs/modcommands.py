@@ -10,7 +10,6 @@ class mod_commands(commands.Cog):
         self.challenge_message = ""
         self.channelID = config.generalchatID
         self.da_rulesID = config.challengerulesID
-        self.challengeMessage.start()
 
     @commands.command()
     @commands.has_permissions(manage_messages=True)
@@ -47,6 +46,7 @@ class mod_commands(commands.Cog):
     async def on_ready(self):
         with open("challenge.txt", "r") as f:
             self.challenge_message = f.readline()
+        self.challengeMessage.start()
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
