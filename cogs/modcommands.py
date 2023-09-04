@@ -39,7 +39,7 @@ class mod_commands(commands.Cog):
             self.challengeMessage.start()
             await ctx.send("challenge reminder is on")
         elif boolarg =="false":
-            self.challengeMessage.stop()
+            self.challengeMessage.cancel()
             await ctx.send("challenge reminder is off")
         
 
