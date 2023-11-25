@@ -12,7 +12,7 @@ a discord bot for the Press Continue community server
 - Basic mod tools to ban and mass remove messages
 
 ## Usage
-Install discord.py, dotenv and python-dateutil according to their respective install instructions
+Install the needed libraries with `pip install requirements.txt`
 
 Create a `.env` file that contains `TOKEN=your-bot-token` 
 
@@ -26,6 +26,14 @@ All configuration is done in `utils/config.py`
 
 
 # Commands
+
+### music commands
+`play [youtube url]` play or add youtube audio to the queue
+`pause` pause the music
+`resume` resume the music
+`skip` skip to the next song
+`clear` clear the queue
+`disconnect` disconnect the bot from VC
 
 ### You need to have ban member priviledges to use any of these commands
 
