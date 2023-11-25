@@ -20,7 +20,7 @@ class mod_commands(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
-    async def ban(self, ctx, member: discord.Member = None):
+    async def ban(self, ctx, member: discord.Member):
         await member.ban()
 
     @commands.command()
@@ -52,7 +52,7 @@ class mod_commands(commands.Cog):
     async def on_command_error(self, ctx, error):
         print(error)
         return
-
+    
     @tasks.loop(hours = config.remindertimer)
     async def challengeMessage(self):
         channel = self.bot.get_channel(self.channelID)
