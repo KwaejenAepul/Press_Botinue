@@ -12,7 +12,7 @@ a discord bot for the Press Continue community server
 - Basic mod tools to ban and mass remove messages
 
 ## Usage
-Install the needed libraries with `pip install requirements.txt`
+Install the needed libraries with `pip install -r requirements.txt`
 
 Create a `.env` file that contains `TOKEN=your-bot-token` 
 

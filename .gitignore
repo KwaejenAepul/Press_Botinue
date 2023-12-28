@@ -11,3 +11,9 @@ challenge.txt
 pollmessage.txt
 tempcommand.py
 cogtest.py
+bin
+lib
+lib64
+include
+share
+pyvenv.cfg

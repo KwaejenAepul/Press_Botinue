@@ -11,7 +11,11 @@ generalchatID = 995797277027344436
 challengerulesID = 1007647922311155834
 remindertimer = 168 #this is in hours
 
-                                    
+#check youtube stream
+yturl = "https://www.youtube.com/@PressContinue"
+notificationChannel = 996126480797007982
+
+
 #bullying the owner stuff
 bully_owner = True
 nukejokes = ["Soooo Press, about those nuclear launch codes!", 
