@@ -13,6 +13,7 @@ class onMessage(commands.Cog):
         self.warn_max = config.warn_max
         self.timeout_length = config.timeout_length
         self.nukejokes = config.nukejokes
+        self.bannedlinks = "discord.gg"
         
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -21,6 +22,7 @@ class onMessage(commands.Cog):
         contents = message.content.lower().split()
 
         if self.bannedlinks in message.content:
+        if self.bannedlinks in contents:
             await message.delete()
             await message.channel.send(
                 f"{message.author.mention}, you can't post discord links here"
