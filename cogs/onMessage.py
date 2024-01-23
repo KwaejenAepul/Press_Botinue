@@ -19,6 +19,12 @@ class onMessage(commands.Cog):
         if message.author == self.bot.user:
             return
         contents = message.content.lower().split()
+
+        if self.bannedlinks in message.content:
+            await message.delete()
+            await message.channel.send(
+                f"{message.author.mention}, you can't post discord links here"
+            )
         if message.author.id == message.guild.owner_id and config.bully_owner == True:
             randomnumber = r.randint(0,30)
             if randomnumber == 8:

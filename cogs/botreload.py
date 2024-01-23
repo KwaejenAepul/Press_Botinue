@@ -10,8 +10,11 @@ class reloadbot(commands.Cog):
     @commands.command()
     async def botreload(self, ctx):
         for file in listdir("./cogs"):
-            if file.endswith(".py"):
-                await self.bot.reload_extension(f"cogs.{file[:-3]}")
+            try:
+                if file.endswith(".py"):
+                    await self.bot.reload_extension(f"cogs.{file[:-3]}")
+            except:
+               await self.bot.load_extension(f"cogs.{file[:-3]}")              
         reload(utils.config)
         await ctx.send("Bot has been reloaded")
 
