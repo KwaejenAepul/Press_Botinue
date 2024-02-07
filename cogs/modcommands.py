@@ -10,7 +10,8 @@ class mod_commands(commands.Cog):
         self.challenge_message = ""
         self.channelID = config.generalchatID
         self.da_rulesID = config.challengerulesID
-
+        self.challenge_active = False
+        
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def purge(self, ctx, limit: int):
@@ -35,10 +36,10 @@ class mod_commands(commands.Cog):
     @commands.has_permissions(ban_members=True)
     async def challengeon(self, ctx, boolarg: str):
         if boolarg == "true":
-            self.challengeMessage.start()
+            self.challenge_active = True
             await ctx.send("challenge reminder is on")
         elif boolarg =="false":
-            self.challengeMessage.cancel()
+            self.challenge_active = False
             await ctx.send("challenge reminder is off")
         
 
@@ -55,14 +56,15 @@ class mod_commands(commands.Cog):
     
     @tasks.loop(hours = config.remindertimer)
     async def challengeMessage(self):
-        channel = self.bot.get_channel(self.channelID)
-        da_rules = self.bot.get_channel(self.da_rulesID)
-        msg = f"""
-        \nCheck out this Month's Community Challenge for a chance to gain exclusive server roles.
-        \nCurrently this Month's challenge is: 
-        {self.challenge_message}
-        \nHead on over to {da_rules.mention} for more information."""
-        await channel.send(msg)
+        if self.challenge_active == True:
+            channel = self.bot.get_channel(self.channelID)
+            da_rules = self.bot.get_channel(self.da_rulesID)
+            msg = f"""
+            \nCheck out this Month's Community Challenge for a chance to gain exclusive server roles.
+            \nCurrently this Month's challenge is: 
+            {self.challenge_message}
+            \nHead on over to {da_rules.mention} for more information."""
+            await channel.send(msg)
 
     @challengeMessage.before_loop
     async def before_checkdb(self):
