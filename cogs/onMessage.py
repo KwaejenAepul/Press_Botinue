@@ -22,7 +22,6 @@ class onMessage(commands.Cog):
         contents = message.content.lower().split()
 
         if self.bannedlinks in message.content:
-        if self.bannedlinks in contents:
             await message.delete()
             await message.channel.send(
                 f"{message.author.mention}, you can't post discord links here"
