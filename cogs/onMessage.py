@@ -66,7 +66,7 @@ class onMessage(commands.Cog):
                             + self.timeout_length
                         )
                     )
-                    await ctx.send(
+                    await message.channel.send(
                         f"{message.author.name} got {self.warn_max} warnings and is in time out"
                     )
                 conn.close()
