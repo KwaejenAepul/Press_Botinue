@@ -17,7 +17,7 @@ notificationChannel = 996126480797007982
 
 
 #bullying the owner stuff
-bully_owner = True
+bully_owner = False
 nukejokes = ["Soooo Press, about those nuclear launch codes!", 
     "Press, where did you say you kept those launch codes?", 
     "Press, could you remind me what the nuclear launch codes were again?", 
