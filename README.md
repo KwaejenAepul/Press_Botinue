@@ -27,19 +27,6 @@ All configuration is done in `utils/config.py`
 
 # Commands
 
-### music commands
-`play [youtube url]` play or add youtube audio to the queue
-
-`pause` pause the music
-
-`resume` resume the music
-
-`skip` skip to the next song
-
-`clear` clear the queue
-
-`disconnect` disconnect the bot from VC
-
 ### You need to have ban member priviledges to use any of these commands
 
 `addword [word]` add one or multiple words to the word filter

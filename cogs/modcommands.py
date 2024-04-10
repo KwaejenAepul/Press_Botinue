@@ -35,10 +35,10 @@ class mod_commands(commands.Cog):
     @commands.command()
     @commands.has_permissions(ban_members=True)
     async def challengeon(self, ctx, boolarg: str):
-        if boolarg == "true":
+        if boolarg.lower() == "true":
             self.challenge_active = True
             await ctx.send("challenge reminder is on")
-        elif boolarg =="false":
+        elif boolarg.lower() =="false":
             self.challenge_active = False
             await ctx.send("challenge reminder is off")
         
