@@ -14,7 +14,7 @@ class onMessage(commands.Cog):
         self.timeout_length = config.timeout_length
         self.nukejokes = config.nukejokes
         self.bannedlinks = "discord.gg"
-        
+
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author == self.bot.user:
@@ -71,7 +71,7 @@ class onMessage(commands.Cog):
                     )
                 conn.close()
                 return
-        
+
     @commands.Cog.listener()
     async def on_ready(self):
         conn = sqlite3.connect("press.db")
@@ -84,10 +84,10 @@ class onMessage(commands.Cog):
     @commands.command()
     @commands.has_permissions(ban_members=True)
     async def addword(self, ctx):
+        conn = sqlite3.connect("press.db")
         for i in ctx.message.content.lower().split()[1:]:
             self.bad_words.append(i)
             word = (i,)
-            conn = sqlite3.connect("press.db")
             c = conn.cursor()
             c.execute("INSERT INTO words VALUES(?)", word)
             conn.commit()
@@ -97,10 +97,10 @@ class onMessage(commands.Cog):
     @commands.command()
     @commands.has_permissions(ban_members=True)
     async def deleteword(self, ctx):
+        conn = sqlite3.connect("press.db")
         for i in ctx.message.content.lower().split()[1:]:
             self.bad_words.remove(i)
             word = (i,)
-            conn = sqlite3.connect("press.db")
             c = conn.cursor()
             c.execute("DELETE FROM words WHERE word = ?", word)
             conn.commit()

@@ -11,8 +11,8 @@ class mod_commands(commands.Cog):
         self.channelID = config.generalchatID
         self.da_rulesID = config.challengerulesID
         self.challenge_active = False
-        
-    @commands.command()
+
+    @commands.command()    
     @commands.has_permissions(manage_messages=True)
     async def purge(self, ctx, limit: int):
         await ctx.channel.purge(limit=limit + 1)
