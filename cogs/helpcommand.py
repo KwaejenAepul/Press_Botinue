@@ -22,19 +22,6 @@ class helpcommand(commands.Cog):
         embed = discord.Embed(title=title, description=commands)
         await ctx.send(embed=embed)
 
-    @commands.command()
-    async def helpmusic(self, ctx):
-        title = "Music commands"
-        addword = f"{prefix}play [youtube url] - play or add youtube audio to the queue\n"
-        deleteword = f"{prefix}pause - pause the music\n"
-        listword = f"{prefix}resume - resume the music\n"
-        warn = f"{prefix}skip - skip to the next song\n"
-        warnings = f"{prefix}clear- clear the queue\n"
-        purge = f"{prefix}disconnect- disconnect the bot from VC\n"
-        commands = addword + deleteword + listword + warn + warnings + purge
-        embed = discord.Embed(title=title, description=commands)
-        await ctx.send(embed=embed)
-
-
+    
 async def setup(bot):
     await bot.add_cog(helpcommand(bot))

@@ -12,7 +12,6 @@ class onMessage(commands.Cog):
         self.bad_words = []
         self.warn_max = config.warn_max
         self.timeout_length = config.timeout_length
-        self.nukejokes = config.nukejokes
         self.bannedlinks = "discord.gg"
 
     @commands.Cog.listener()
@@ -26,11 +25,7 @@ class onMessage(commands.Cog):
             await message.channel.send(
                 f"{message.author.mention}, you can't post discord links here"
             )
-        if message.author.id == message.guild.owner_id and config.bully_owner == True:
-            randomnumber = r.randint(0,30)
-            if randomnumber == 8:
-                joke = r.choice(self.nukejokes)
-                await message.channel.send(joke)
+        
         for word in self.bad_words:
             if word in contents:
                 await message.delete()

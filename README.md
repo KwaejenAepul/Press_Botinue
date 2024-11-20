@@ -18,7 +18,7 @@ Create a `.env` file that contains `TOKEN=your-bot-token`
 
 To run the both simply open the folder in your terminal and run `python3 main.py`
 
-Initialise the database with`!init_db`.
+Initialise the database with`!init_db` and `!init_leaderboards` for the leaderboard.
 
 This will create a database with a table for the warnings of the past 7 days, timeouts of the past 30 days, banned words, and a table for every member that has been warned at least once with total warnings and timeouts the member has had
 
@@ -45,5 +45,8 @@ All configuration is done in `utils/config.py`
 
 `challengeedit [the challenge]` edit what the current challenge is
 
- 
+`new_entry [up to three member IDs]` add the top 3 of the last community challenge in the order they are in the message (1st 2nd 3rd) 
+
+### Everybody can use these
+`leaderboards` show the top 10 of the community challenge participants
  

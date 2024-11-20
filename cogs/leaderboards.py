@@ -38,21 +38,31 @@ class leaderboard(commands.Cog):
                 break
             in_db = c.execute("SELECT EXISTS(SELECT 1 FROM leaderboard WHERE member = ?)", (member,)).fetchone()[0]
             if in_db:
-                c.execute("UPDATE leaderboard SET points + ? WHERE member=?", (points, member))
+                c.execute("UPDATE leaderboard SET points = points + ? WHERE member=?", (points, member))
             else:
                 c.execute("INSERT INTO leaderboard VALUES(?,?)", (member, points))
             i+=1
             conn.commit()
         conn.close()
+        await ctx.send("leaderboards updated")
 
     @commands.command()
     async def leaderboards(self, ctx):
         conn = sqlite3.connect("leaderboards.db")
         c = conn.cursor()
         results = c.execute("SELECT member, points FROM leaderboard ORDER BY points DESC").fetchall()
-        print(f"{results}")
+        embed_text = ""
+        i = 0
+        while i < 10:
+            try:
+                _member = ctx.guild.get_member(results[i][0])
+                embed_text += f"{_member.display_name}: {results[i][1]} points\n"
+            except IndexError:
+                break     
+            i+=1
+        embed = discord.Embed(title="Community Challenge Leaderboard", description=embed_text)
+        await ctx.send(embed=embed)
         conn.close()
 
 async def setup(bot):
     await bot.add_cog(leaderboard(bot))
-
