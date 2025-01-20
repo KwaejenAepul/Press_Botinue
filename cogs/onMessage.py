@@ -25,7 +25,7 @@ class onMessage(commands.Cog):
             await message.channel.send(
                 f"{message.author.mention}, you can't post discord links here"
             )
-        
+
         for word in self.bad_words:
             if word in contents:
                 await message.delete()
@@ -35,9 +35,14 @@ class onMessage(commands.Cog):
                 t = (str(message.author.id),)
                 conn = sqlite3.connect("press.db")
                 c = conn.cursor()
-                c.execute(
-                    "UPDATE points SET warnings = warnings + 1 WHERE member=?", t)
-                conn.commit()
+                in_db = c.execute("SELECT EXISTS(SELECT 1 FROM points WHERE member=?)", t).fetchone()[0]
+                if in_db:
+                    c.execute("UPDATE points SET warnings = warnings + 1 WHERE member=?", t)
+                    conn.commit()
+                else:
+                    print(1)
+                    c.execute("INSERT INTO points VALUES(?,?,?,?,?)",(str(message.author.id),1, 1, 0, ""))
+                    conn.commit()
                 reason = "used slur/banned word"
                 date = str(datetime.today() + relativedelta(days=config.warning_expire)).split()
                 warn_entry = (str(message.author.id), reason, date[0])
