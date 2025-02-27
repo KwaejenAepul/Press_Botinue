@@ -1,4 +1,3 @@
-import random as r
 from discord.ext import commands
 from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
@@ -28,6 +27,8 @@ class onMessage(commands.Cog):
 
         for word in self.bad_words:
             if word in contents:
+                if message.author.guild_permissions.ban_members == True:
+                    return
                 await message.delete()
                 await message.channel.send(
                     f"{message.author.mention}, message contained banned word and have been warned."
@@ -40,7 +41,6 @@ class onMessage(commands.Cog):
                     c.execute("UPDATE points SET warnings = warnings + 1 WHERE member=?", t)
                     conn.commit()
                 else:
-                    print(1)
                     c.execute("INSERT INTO points VALUES(?,?,?,?,?)",(str(message.author.id),1, 1, 0, ""))
                     conn.commit()
                 reason = "used slur/banned word"
@@ -71,7 +71,7 @@ class onMessage(commands.Cog):
                     )
                 conn.close()
                 return
-
+    
     @commands.Cog.listener()
     async def on_ready(self):
         conn = sqlite3.connect("press.db")
