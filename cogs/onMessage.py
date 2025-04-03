@@ -20,10 +20,11 @@ class onMessage(commands.Cog):
         contents = message.content.lower().split()
 
         if self.bannedlinks in message.content:
-            await message.delete()
-            await message.channel.send(
-                f"{message.author.mention}, you can't post discord links here"
-            )
+            if message.author.guild_permissions.ban_members == False:
+                await message.delete()
+                await message.channel.send(
+                    f"{message.author.mention}, you can't post discord links here"
+                )
 
         for word in self.bad_words:
             if word in contents:
