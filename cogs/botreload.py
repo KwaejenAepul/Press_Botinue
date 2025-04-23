@@ -7,6 +7,7 @@ class reloadbot(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+
     @commands.command()
     async def botreload(self, ctx):
         for file in listdir("./cogs"):
