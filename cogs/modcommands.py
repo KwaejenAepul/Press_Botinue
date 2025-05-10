@@ -56,7 +56,7 @@ class mod_commands(commands.Cog):
     
     @tasks.loop(hours = config.remindertimer)
     async def challengeMessage(self):
-        if self.challenge_active == True:
+        if self.challenge_active:
             channel = self.bot.get_channel(self.channelID)
             da_rules = self.bot.get_channel(self.da_rulesID)
             msg = f"""
