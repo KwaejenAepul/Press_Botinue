@@ -5,7 +5,7 @@ import sqlite3
 class leaderboard(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+        
     @commands.command()
     @commands.has_permissions(ban_members=True)
     async def init_leaderboards(self, ctx):
@@ -23,9 +23,9 @@ class leaderboard(commands.Cog):
     async def new_entry(self, ctx):
         conn = sqlite3.connect("leaderboards.db")
         c = conn.cursor()
-        i=1
+        i = 1
         contents = ctx.message.content.split()
-        for member in contents[1:] :
+        for member in contents[1:]:
             points = 0
             member = int(member)
             if i == 1:
@@ -41,7 +41,7 @@ class leaderboard(commands.Cog):
                 c.execute("UPDATE leaderboard SET points = points + ? WHERE member=?", (points, member))
             else:
                 c.execute("INSERT INTO leaderboard VALUES(?,?)", (member, points))
-            i+=1
+            i += 1
             conn.commit()
         conn.close()
         await ctx.send("leaderboards updated")
