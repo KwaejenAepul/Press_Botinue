@@ -56,7 +56,10 @@ class leaderboard(commands.Cog):
         while i < 10:
             try:
                 _member = ctx.guild.get_member(results[i][0])
-                embed_text += f"{_member.display_name}: {results[i][1]} points\n"
+                try:
+                    embed_text += f"{_member.display_name}: {results[i][1]} points\n"
+                except AttributeError:
+                    embed_text += f"{results[i][0]}: {results[i][1]} points\n"
             except IndexError:
                 break     
             i+=1
