@@ -43,7 +43,7 @@ All configuration is done in `utils/config.py`
 
 `challengeon [true/false]` turn on or off the message reminder
 
-`challengeedit [the challenge]` edit what the current challenge is
+`editchallenge [the challenge]` edit what the current challenge is
 
 `new_entry [up to three member IDs]` add the top 3 of the last community challenge in the order they are in the message (1st 2nd 3rd) 
 
