@@ -30,9 +30,10 @@ class onMessage(commands.Cog):
             if word in contents:
                 if message.author.guild_permissions.ban_members == True:
                     return
+                print(message)
                 await message.delete()
                 await message.channel.send(
-                    f"{message.author.mention}, message contained banned word and have been warned."
+                    f"{message.author.mention}, message contained banned word and you have been warned."
                 )
                 t = (str(message.author.id),)
                 conn = sqlite3.connect("press.db")
