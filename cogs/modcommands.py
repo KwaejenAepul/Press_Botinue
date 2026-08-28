@@ -12,7 +12,7 @@ class mod_commands(commands.Cog):
         self.da_rulesID = config.challengerulesID
         self.challenge_active = False
 
-    @commands.command()    
+    @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def purge(self, ctx, limit: int):
         await ctx.channel.purge(limit=limit + 1)
@@ -41,7 +41,7 @@ class mod_commands(commands.Cog):
         elif boolarg.lower() =="false":
             self.challenge_active = False
             await ctx.send("challenge reminder is off")
-        
+
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -53,7 +53,7 @@ class mod_commands(commands.Cog):
     async def on_command_error(self, ctx, error):
         print(error)
         return
-    
+
     @tasks.loop(hours = config.remindertimer)
     async def challengeMessage(self):
         if self.challenge_active:
@@ -61,7 +61,7 @@ class mod_commands(commands.Cog):
             da_rules = self.bot.get_channel(self.da_rulesID)
             msg = f"""
             \nCheck out this Month's Community Challenge for a chance to gain exclusive server roles.
-            \nCurrently this Month's challenge is: 
+            \nCurrently this Month's challenge is:
             {self.challenge_message}
             \nHead on over to {da_rules.mention} for more information."""
             await channel.send(msg)

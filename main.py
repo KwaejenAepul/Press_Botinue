@@ -1,11 +1,13 @@
-from dotenv import load_dotenv
-from os import getenv, listdir
-from discord.ext import commands
-from utils.config import prefix
-import discord
 import asyncio
+from os import getenv, listdir
 
-load_dotenv()
+import discord
+from discord.ext import commands
+from dotenv import load_dotenv
+
+from utils.config import prefix
+
+_ = load_dotenv()
 TOKEN = getenv("TOKEN", "")
 intents = discord.Intents.all()
 
@@ -14,8 +16,7 @@ bot = commands.Bot(command_prefix=prefix, intents=intents, help_command=None)
 
 @bot.event
 async def on_ready():
-    print(
-        f"Alright logged in as {bot.user}\n---------------------------------------")
+    print(f"Alright logged in as {bot.user}\n---------------------------------------")
 
 
 async def load():

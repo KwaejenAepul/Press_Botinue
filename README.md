@@ -1,3 +1,7 @@
+> [!WARNING]
+> I do no longer maintain this! Please update the dependencies if you're using it
+
+
 # Press Botinue
 a discord bot for the Press Continue community server
 
